@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    @apply border-slate-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-parchment pb-28 font-body text-ink antialiased lg:pb-0;
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(185, 138, 70, 0.12), transparent 30%),
+      radial-gradient(circle at 100% 12%, rgba(143, 102, 57, 0.1), transparent 24%),
+      radial-gradient(circle at 50% 100%, rgba(16, 37, 66, 0.06), transparent 28%),
+      linear-gradient(180deg, #fcf7f0 0%, #f5efe7 48%, #f8f2eb 100%);
+    position: relative;
+    isolation: isolate;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.82), transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 35%);
+    pointer-events: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    background: rgba(16, 37, 66, 0.16);
+    color: #102542;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .panel {
+    @apply rounded-[22px] border border-white/20 bg-white/80 shadow-royal backdrop-blur-xl;
+  }
+
+  .panel-dark {
+    @apply rounded-[24px] border border-white/10 bg-royal text-white shadow-royal;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-royal backdrop-blur-md shadow-sm;
+  }
+
+  .field {
+    @apply mt-2 w-full rounded-[18px] border border-[#eadfce] bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/10;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-royal px-6 py-3 font-display text-lg tracking-wide text-white shadow-royal transition duration-500 hover:scale-[1.03] hover:bg-royal-soft hover:shadow-glow;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/80 backdrop-blur-xl px-5 py-3 text-sm font-semibold text-royal shadow-sm transition duration-500 hover:scale-[1.03] hover:bg-white;
+  }
+}

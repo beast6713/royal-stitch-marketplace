@@ -1,0 +1,5 @@
+-- Legacy shim.
+-- The atomic order RPC now lives in supabase/production_hardening.sql alongside
+-- the payment, webhook, audit, job, and index changes it depends on.
+--
+-- Run supabase/production_hardening.sql after supabase/schema.sql.
