@@ -1,6 +1,6 @@
 # 🧵 Royal Stitch Marketplace
 
-A high-performance bespoke apparel and tailoring custom marketplace built with **Next.js 15 (App Router)**, **PostgreSQL (Supabase)**, **Clerk Authentication**, and **Razorpay Payments**.
+An elegant, high-performance bespoke apparel and custom tailoring marketplace built using **Next.js 15 (App Router)**, **PostgreSQL (Supabase)**, **Clerk Authentication**, and **Razorpay Payments**.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
@@ -92,7 +92,7 @@ To start the development server:
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) (or the port shown in your terminal) to view the application.
+Open [http://localhost:3000](http://localhost:3000) (or the port configuration shown in your console) to view the application.
 
 ### Running Tests
 
@@ -145,9 +145,9 @@ All UI is API-driven. No mock state is used. Every interaction (cart, checkout, 
 Optimistic UI is applied only to non-destructive actions like cart updates. The UI updates immediately, and the API call runs in the background. On failure (e.g., 409 due to stock mismatch), the client rolls back state and displays a retry message.
 
 Performance is controlled through:
-* Dynamic imports for heavy modules (e.g., payment SDK) to prevent blocking initial render
-* Cursor-based pagination to avoid offset-scan degradation and keep query cost bounded
-* Hydration boundaries to limit client-side JavaScript to interactive components only
+- Dynamic imports for heavy modules (e.g., payment SDK) to prevent blocking initial render
+- Cursor-based pagination to avoid offset-scan degradation and keep query cost bounded
+- Hydration boundaries to limit client-side JavaScript to interactive components only
 
 **Degradation Behavior:**
 Under high load or API latency, non-critical UI elements (e.g., recommendations) fall back to default content, while core flows (catalog and checkout) remain functional.
@@ -162,22 +162,22 @@ Supabase client is used for standard CRUD operations where Row Level Security (R
 postgres.js is used for critical paths such as checkout, where explicit transaction control and performance tuning are required.
 
 Index strategy is designed around query patterns:
-* `products(category_id, created_at DESC)` supports category-based pagination without full table scans
-* `orders(buyer_id, created_at DESC)` supports efficient user order history queries
+- `products(category_id, created_at DESC)` supports category-based pagination without full table scans
+- `orders(buyer_id, created_at DESC)` supports efficient user order history queries
 
 Without these indices, queries degrade to O(n) scans. With indices, lookups remain logarithmic and bounded by page size.
 
 Checkout is handled through a transactional flow:
-* Inventory rows are locked using `SELECT ... FOR UPDATE`
-* Stock is validated before deduction
-* Order and order_items are created atomically
-* Cart is cleared within the same transaction
+- Inventory rows are locked using `SELECT ... FOR UPDATE`
+- Stock is validated before deduction
+- Order and order_items are created atomically
+- Cart is cleared within the same transaction
 
 If any step fails, PostgreSQL rolls back automatically, preventing partial state.
 
 Aggregation (e.g., seller metrics, trending products) is performed at the database level using SQL/RPC instead of API-level loops, reducing memory overhead and network latency.
 
-*Assumption:* system operates under moderate scale (<50k products, controlled write contention).
+Assumption: system operates under moderate scale (<50k products, controlled write contention).
 
 **Degradation Behavior:**
 Under heavy load (e.g., connection pool saturation or lock contention), transactions may timeout. The API returns a 503, and clients retry with backoff.
@@ -194,15 +194,15 @@ Jobs are stored in a `background_jobs` table with states:
 Workers poll the table and claim jobs atomically, preventing duplicate execution.
 
 **Retry policy:**
-* Limited attempts (max 5)
-* Exponential backoff
-* Only transient failures are retried
+- Limited attempts (max 5)
+- Exponential backoff
+- Only transient failures are retried
 
 Permanent failures are marked as `failed` and require manual inspection.
 
 **Observability:**
-* Each job logs `job_id`, `job_type`, and `error_message`
-* Failures can be traced and replayed manually
+- Each job logs `job_id`, `job_type`, and `error_message`
+- Failures can be traced and replayed manually
 
 **Degradation Behavior:**
 If the worker crashes, jobs remain in the database and resume processing when the worker restarts.
@@ -223,13 +223,13 @@ Idempotency is enforced using a unique constraint on `razorpay_payment_id`.
 Both client verification and webhook updates attempt to write, but duplicates are safely ignored.
 
 **Recovery handling:**
-* If client disconnects, webhook completes the flow
-* If webhook fails, order times out and is marked failed
-* A background job releases reserved inventory after a timeout
+- If client disconnects, webhook completes the flow
+- If webhook fails, order times out and is marked failed
+- A background job releases reserved inventory after a timeout
 
 **Observability:**
-* Payment attempts log `order_id`, `user_id`, and mismatch errors
-* Failed or inconsistent payments trigger alerts
+- Payment attempts log `order_id`, `user_id`, and mismatch errors
+- Failed or inconsistent payments trigger alerts
 
 **Degradation Behavior:**
 If webhook delivery fails, the system relies on client verification. If both fail, orders expire and require reconciliation.
@@ -241,14 +241,14 @@ If webhook delivery fails, the system relies on client verification. If both fai
 The system uses a rule-based scoring model instead of machine learning to avoid complexity and cold-start issues at current scale.
 
 **Scoring:**
-* Views (1x) → awareness
-* Cart additions (4x) → intent
-* Purchases (12x) → confirmed interest
+- Views (1x) → awareness
+- Cart additions (4x) → intent
+- Purchases (12x) → confirmed interest
 
 Recommendations are limited to recent activity (e.g., last 7 days) to maintain relevance.
 
 **Caching:**
-* Results are cached with a short TTL (~120 seconds) to reduce repeated DB computation while keeping data reasonably fresh
+- Results are cached with a short TTL (~120 seconds) to reduce repeated DB computation while keeping data reasonably fresh
 
 This approach trades perfect personalization for simplicity, predictability, and low infrastructure cost.
 
@@ -268,9 +268,9 @@ If telemetry or scoring fails, the system falls back to static recommendations s
 | Seller Ops | Unauthorized update attempt | RLS rejects operation (403)    | Unauthorized error              | Unchanged  |
 
 Failures are categorized as:
-* Network → retryable
-* Client error (4xx) → user correction
-* Server error (5xx) → fallback + retry
+- Network → retryable
+- Client error (4xx) → user correction
+- Server error (5xx) → fallback + retry
 </details>
 
 <details>
@@ -279,28 +279,28 @@ Failures are categorized as:
 Security is enforced at multiple layers to prevent misuse and data leaks.
 
 **Authentication:**
-* Clerk manages user sessions via JWT
-* Middleware validates tokens before API execution
+- Clerk manages user sessions via JWT
+- Middleware validates tokens before API execution
 
 **Authorization:**
-* Row Level Security (RLS) ensures users access only their own data
-* API-level checks add defense in depth
+- Row Level Security (RLS) ensures users access only their own data
+- API-level checks add defense in depth
 
 **Input Validation:**
-* All inputs validated via Zod schemas
-* Invalid data rejected before DB interaction
+- All inputs validated via Zod schemas
+- Invalid data rejected before DB interaction
 
 **Rate Limiting:**
-* Sliding window per IP or user
-* Prevents abuse and protects backend resources
+- Sliding window per IP or user
+- Prevents abuse and protects backend resources
 
 **Webhook Security:**
-* Razorpay webhooks verified using HMAC-SHA256 signatures
-* Invalid signatures are rejected immediately
+- Razorpay webhooks verified using HMAC-SHA256 signatures
+- Invalid signatures are rejected immediately
 
 **Observability:**
-* Critical operations log `request_id`, `user_id`, and `order_id`
-* Enables tracing across systems
+- Critical operations log `request_id`, `user_id`, and `order_id`
+- Enables tracing across systems
 
 **Degradation Behavior:**
 Under high traffic or attack conditions, rate limiting drops excess requests while preserving core transactional flows.
