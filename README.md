@@ -259,3 +259,10 @@ Security is enforced at multiple layers to prevent misuse and data leaks.
 **Degradation Behavior:**
 Under high traffic or attack conditions, rate limiting drops excess requests while preserving core transactional flows.
 </details>
+
+---
+
+## 👥 Contributors
+
+- **[beast6713](https://github.com/beast6713)** — Lead Developer & Owner
+- **[nilesh-afk](https://github.com/nilesh-afk)** — Contributor / Collaborator
