@@ -24,6 +24,52 @@ A high-performance bespoke apparel and tailoring custom marketplace built with *
 
 ---
 
+## 📸 Experience Showcase
+
+Here are snapshots of the application features running in the local development environment:
+
+<details>
+<summary><b>💻 Homepage Catalog & Browsing</b></summary>
+<br/>
+<p align="center">
+  <img src="./public/images/showcase/homepage.png" alt="Homepage" width="90%">
+</p>
+</details>
+
+<details>
+<summary><b>👕 Product Detail Page (PDP) & Custom Options</b></summary>
+<br/>
+<p align="center">
+  <img src="./public/images/showcase/pdp.png" alt="Product Detail Page" width="90%">
+</p>
+</details>
+
+<details>
+<summary><b>🛒 Interactive Cart Page</b></summary>
+<br/>
+<p align="center">
+  <img src="./public/images/showcase/cart.png" alt="Cart Page" width="90%">
+</p>
+</details>
+
+<details>
+<summary><b>💳 Secure Checkout Flow</b></summary>
+<br/>
+<p align="center">
+  <img src="./public/images/showcase/checkout.png" alt="Checkout Page" width="90%">
+</p>
+</details>
+
+<details>
+<summary><b>🧑‍💼 Seller Portal & Onboarding</b></summary>
+<br/>
+<p align="center">
+  <img src="./public/images/showcase/seller.png" alt="Seller Onboarding" width="90%">
+</p>
+</details>
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
